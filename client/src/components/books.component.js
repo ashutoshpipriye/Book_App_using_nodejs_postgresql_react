@@ -31,7 +31,7 @@ const ReturnUserBook = (props) => {
       isIssue: false,
     };
     const id = booksRef.current[rowIdx].id;
-    UserService.issueBook(id, data)
+    UserService.returnBook(id, data)
       .then((response) => {
         console.log(response.data);
       })
@@ -69,10 +69,6 @@ const ReturnUserBook = (props) => {
           const rowIdx = props.row.id;
           return (
             <div>
-              {/* <span onClick={() => openBook(rowIdx)}>
-                <i className="far fa-edit action mr-2"></i>
-              </span> */}
-
               <button
                 className="btn btn-outline-secondary"
                 type="button"

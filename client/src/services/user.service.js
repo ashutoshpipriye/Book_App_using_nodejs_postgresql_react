@@ -26,8 +26,16 @@ class UserService {
     return axios.get(API_URL + "books?isIssue=true");
   }
 
-  issueBook(id, data) {
+  updateBook(id, data) {
     return axios.put(API_URL + `books/${id}`, data);
+  }
+
+  issueBook(id, data) {
+    return axios.put(API_URL + `books/issue/${id}`, data);
+  }
+
+  returnBook(id, data) {
+    return axios.put(API_URL + `books/return/${id}`, data);
   }
 
   getAdminBoard() {
@@ -37,8 +45,21 @@ class UserService {
   createBook(data) {
     return axios.post(API_URL + "books", data);
   }
+
   deleteBook(id) {
     return axios.delete(API_URL + `books/${id}`);
+  }
+
+  getUserBooks() {
+    return axios.get(API_URL + "books/user/Books");
+  }
+
+  getUsers() {
+    return axios.get(API_URL + "users");
+  }
+
+  getUser(id) {
+    return axios.get(API_URL + `user/${id}`);
   }
 }
 

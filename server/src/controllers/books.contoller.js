@@ -1,5 +1,6 @@
 const db = require("../models");
 const Book = db.books;
+const Userbooks = db.userBooks;
 // const Op = db.Sequelize.Op;
 
 // Create and Save a new Book
@@ -67,6 +68,95 @@ exports.getBook = async (req, res) => {
 
 // Issue a Book by the id in the request
 exports.issueBook = async (req, res) => {
+  const id = req.params.id;
+  var issuedDate = new Date();
+  const data = {
+    isIssue: req.body.isIssue,
+    userId: req.body.userId,
+    bookId: id,
+    issuedDate: issuedDate,
+  };
+
+  await Book.update(data, {
+    where: { id: id },
+  })
+    .then(() => {
+      if (req.body.isIssue) {
+        Userbooks.create(data)
+          .then((data) => {
+            res.send(data);
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "Some error occurred while creating the user book detail.",
+            });
+          });
+      } else {
+        res.send({
+          message: "Book is already issued!",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating Book with id=" + id,
+      });
+    });
+};
+
+// Return a Book by the id in the request
+exports.returnBook = async (req, res) => {
+  const id = req.params.id;
+  var returnDate = new Date();
+  const data = {
+    isIssue: req.body.isIssue,
+    returnDate: returnDate,
+  };
+
+  await Book.update(data, {
+    where: { id: id },
+  })
+    .then(() => {
+      if (!req.body.isIssue) {
+        Userbooks.update(data, {
+          where: { bookId: id },
+        })
+          .then((data) => {
+            res.send(data);
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "Some error occurred while creating the user book detail.",
+            });
+          });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating Book with id=" + id,
+      });
+    });
+};
+
+// get userBooks
+exports.getUserBooks = async (req, res) => {
+  await Userbooks.findAll()
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Some error occurred while retrieving books.",
+      });
+    });
+};
+
+// Issue a Book by the id in the request
+exports.updateBook = async (req, res) => {
   const id = req.params.id;
 
   await Book.update(req.body, {

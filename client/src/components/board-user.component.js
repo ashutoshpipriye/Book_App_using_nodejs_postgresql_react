@@ -1,12 +1,28 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import UserService from "../services/user.service";
+import ViewBook from "../models/viewBook";
 import { useTable } from "react-table";
+import AuthService from "../services/auth.service";
 
 const BoardUser = (props) => {
   const [books, setBooks] = useState([]);
+  const [viewModalShow, setviewModalShow] = useState(false);
+  const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
   const booksRef = useRef();
 
+  const [updateData, setupdateData] = useState({
+    title: "",
+    author: "",
+    description: "",
+  });
+
   booksRef.current = books;
+
+  const openViewModal = (cell) => {
+    if (cell.column.id == "title") {
+      setviewModalShow(true);
+    }
+  };
 
   useEffect(() => {
     retrieveBooks();
@@ -26,15 +42,22 @@ const BoardUser = (props) => {
     retrieveBooks();
   };
 
-  // const viewBook = (rowIndex) => {
-  //   const id = booksRef.current[rowIndex].id;
-
-  //   props.history.push("/books/" + id);
-  // };
+  const loadBook = (rowIdx, cell) => {
+    const id = booksRef.current[rowIdx].id;
+    UserService.getBook(id)
+      .then((response) => {
+        setupdateData(response.data);
+        // console.log(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   const issueBook = (rowIdx) => {
     var data = {
       isIssue: true,
+      userId: currentUser.id,
     };
     const id = booksRef.current[rowIdx].id;
     UserService.issueBook(id, data)
@@ -75,15 +98,12 @@ const BoardUser = (props) => {
           const rowIdx = props.row.id;
           return (
             <div>
-              {/* <span onClick={() => openBook(rowIdx)}>
-                <i className="far fa-edit action mr-2"></i>
-              </span> */}
-
               <button
                 className="btn btn-outline-secondary"
                 type="button"
-                // onClick={issueBook(rowIdx)}
-                onClick={() => issueBook(rowIdx)}
+                onClick={() => {
+                  issueBook(rowIdx);
+                }}
               >
                 Issue Book
               </button>
@@ -126,7 +146,15 @@ const BoardUser = (props) => {
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell) => {
                     return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      <td
+                        onClick={() => {
+                          loadBook(row.id);
+                          openViewModal(cell);
+                        }}
+                        {...cell.getCellProps()}
+                      >
+                        {cell.render("Cell")}
+                      </td>
                     );
                   })}
                 </tr>
@@ -135,6 +163,13 @@ const BoardUser = (props) => {
           </tbody>
         </table>
       </div>
+      <ViewBook
+        show={viewModalShow}
+        onHide={() => setviewModalShow(false)}
+        title={updateData.title}
+        author={updateData.author}
+        description={updateData.description}
+      />
     </div>
   );
 };

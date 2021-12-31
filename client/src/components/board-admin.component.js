@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import UserService from "../services/user.service";
 import ViewBook from "../models/viewBook";
+import UpdateBook from "../models/updateBook";
 import { useTable } from "react-table";
 
 const BoardAdmin = (props) => {
   const [books, setBooks] = useState([]);
   const [viewModalShow, setviewModalShow] = useState(false);
+  const [editModalShow, seteditModalShow] = useState(false);
 
   const [updateData, setupdateData] = useState({
     title: "",
@@ -13,13 +15,21 @@ const BoardAdmin = (props) => {
     description: "",
   });
 
-  const booksRef = useRef();
+  const onInputChanges = (event) => {
+    setupdateData({ ...updateData, [event.target.name]: event.target.value });
+  };
 
-  booksRef.current = books;
+  const openEditModal = () => {
+    seteditModalShow(true);
+  };
 
   const openViewModal = () => {
     setviewModalShow(true);
   };
+
+  const booksRef = useRef();
+
+  booksRef.current = books;
 
   useEffect(() => {
     retrieveBooks();
@@ -35,6 +45,10 @@ const BoardAdmin = (props) => {
       });
   };
 
+  const refreshList = () => {
+    retrieveBooks();
+  };
+
   const loadBook = (rowIdx) => {
     const id = booksRef.current[rowIdx].id;
     UserService.getBook(id)
@@ -46,29 +60,39 @@ const BoardAdmin = (props) => {
       });
   };
 
-  const refreshList = () => {
-    retrieveBooks();
-  };
-
-  // const viewBook = (rowIndex) => {
-  //   const id = booksRef.current[rowIndex].id;
-
-  //   props.history.push("/books/" + id);
-  // };
-
-  const updateBook = (rowIdx) => {
+  const updateBook = () => {
     var data = {
-      isIssue: true,
+      title: updateData.title,
+      author: updateData.author,
+      description: updateData.description,
     };
-    const id = booksRef.current[rowIdx].id;
-    UserService.issueBook(id, data)
+    const id = updateData.id;
+    UserService.updateBook(id, data)
       .then((response) => {
         console.log(response.data);
+        seteditModalShow(false);
       })
       .catch((e) => {
         console.log(e);
       });
     refreshList();
+  };
+
+  const deleteBook = (rowIndex) => {
+    const id = booksRef.current[rowIndex].id;
+
+    UserService.deleteBook(id)
+      .then((response) => {
+        props.history.push("/addBook");
+
+        let newBooks = [...books.current];
+        newBooks.splice(rowIndex, 1);
+
+        setBooks(newBooks);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   const columns = useMemo(
@@ -112,8 +136,17 @@ const BoardAdmin = (props) => {
               <button
                 className="btn btn-outline-secondary"
                 type="button"
-                // onClick={issueBook(rowIdx)}
-                onClick={() => updateBook(rowIdx)}
+                onClick={() => {
+                  loadBook(rowIdx);
+                  openEditModal();
+                }}
+              >
+                Update Book
+              </button>
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                onClick={() => deleteBook(rowIdx)}
               >
                 Delete Book
               </button>
@@ -156,15 +189,7 @@ const BoardAdmin = (props) => {
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell) => {
                     return (
-                      <td
-                        onClick={() => {
-                          loadBook(row.id);
-                          openViewModal();
-                        }}
-                        {...cell.getCellProps()}
-                      >
-                        {cell.render("Cell")}
-                      </td>
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                     );
                   })}
                 </tr>
@@ -173,6 +198,15 @@ const BoardAdmin = (props) => {
           </tbody>
         </table>
       </div>
+      <UpdateBook
+        show={editModalShow}
+        onHide={() => seteditModalShow(false)}
+        title={updateData.title}
+        author={updateData.author}
+        description={updateData.description}
+        onInputChanges={onInputChanges}
+        updateBook={updateBook}
+      />
       <ViewBook
         show={viewModalShow}
         onHide={() => setviewModalShow(false)}

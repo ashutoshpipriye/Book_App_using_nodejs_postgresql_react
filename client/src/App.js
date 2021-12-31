@@ -13,6 +13,7 @@ import BoardUser from "./components/board-user.component";
 import BoardAdmin from "./components/board-admin.component";
 import ReturnUserBook from "./components/books.component";
 import AddBook from "./components/addbook.component";
+import UserBooks from "./components/user-books.component";
 
 import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
@@ -81,6 +82,14 @@ class App extends Component {
               </li>
             )}
 
+            {showAdminBoard && (
+              <li className="nav-item">
+                <Link to={"/userBook"} className="nav-link">
+                  User Book
+                </Link>
+              </li>
+            )}
+
             {currentUser && (
               <li className="nav-item">
                 <Link to={"/books"} className="nav-link">
@@ -138,6 +147,7 @@ class App extends Component {
             <Route path="/returnBooks" component={ReturnUserBook} />
             <Route path="/admin" component={BoardAdmin} />
             <Route path="/addBook" component={AddBook} />
+            <Route path="/userBook" component={UserBooks} />
           </Switch>
         </div>
 

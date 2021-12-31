@@ -17,7 +17,7 @@ const Viewbook = (props) => {
       <Modal.Body>
         <form>
           <div className="form-group">
-            <label htmlFor="summary">Book Title</label>
+            <label htmlFor="title">Book Title</label>
             <input
               type="text"
               className="form-control"
@@ -30,7 +30,7 @@ const Viewbook = (props) => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="desc">Book Author</label>
+            <label htmlFor="author">Book Author</label>
             <textarea
               type="text"
               className="form-control"
@@ -43,7 +43,7 @@ const Viewbook = (props) => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="desc">Book Description</label>
+            <label htmlFor="description">Book Description</label>
             <textarea
               type="text"
               className="form-control"

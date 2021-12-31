@@ -22,8 +22,17 @@ module.exports = (app) => {
   // Retrieve single book
   router.get("/:id", books.getBook);
 
-  // Update a Book with id
-  router.put("/:id", books.issueBook);
+  // issue a Book with id
+  router.put("/issue/:id", books.issueBook);
+
+  // issue a Book with id
+  router.put("/return/:id", books.returnBook);
+
+  // get userBooks
+  router.get("/user/Books", books.getUserBooks);
+
+  // Update Book a with id
+  router.put("/:id", books.updateBook);
 
   // Delete a Book with id
   router.delete("/:id", books.deleteBook);

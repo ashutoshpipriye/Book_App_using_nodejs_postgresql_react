@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\":\"Node js\",\r\n    \"author\":\"JJ\",\r\n    \"description\":\"API Design Patterns lays out a set of design principles for building internal and public-facing APIs.\"\r\n}",
+					"raw": "{\r\n    \"title\":\"Java\",\r\n    \"author\":\"JJ\",\r\n    \"description\":\"API Design Patterns lays out a set of design principles for building internal and public-facing APIs.\",\r\n    \"userId\": 2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -80,7 +80,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/books?isIssue=false",
+					"raw": "localhost:8080/api/books",
 					"host": [
 						"localhost"
 					],
@@ -88,12 +88,6 @@
 					"path": [
 						"api",
 						"books"
-					],
-					"query": [
-						{
-							"key": "isIssue",
-							"value": "false"
-						}
 					]
 				}
 			},
@@ -106,7 +100,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"isIssue\": false\r\n}",
+					"raw": "{\r\n    \"isIssue\": true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -114,7 +108,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/books/1",
+					"raw": "localhost:8080/api/books/2",
 					"host": [
 						"localhost"
 					],
@@ -122,7 +116,7 @@
 					"path": [
 						"api",
 						"books",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -198,6 +192,126 @@
 						"api",
 						"books",
 						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Issue Book",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"isIssue\": true,\r\n    \"userId\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/books/issue/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"issue",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Return Book",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"isIssue\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/books/return/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"return",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Books",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/books/user/Books",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"user",
+						"Books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/user/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"1"
 					]
 				}
 			},
