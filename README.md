@@ -39,9 +39,3 @@
 6. Now run the sql script for default role given in script folder.
 
 7. Now run the postman request for add admin user and postman collection is also given.
-
-
-8. Screenshot:
-
-
-
