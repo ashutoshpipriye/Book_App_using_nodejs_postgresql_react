@@ -1,21 +1,18 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import UserService from "../services/user.service";
-import { useTable } from "react-table";
 
 const UserBooks = (props) => {
   const [userBooks, setUserBooks] = useState([]);
-  const [book, setBook] = useState([]);
-  const [user, setUser] = useState([]);
+  // const [book, setBook] = useState([]);
+  // const [user, setUser] = useState([]);
 
-  const [updateData, setupdateData] = useState(
-    {
-      bookName: "",
-      username: "",
-      issuedDate: "",
-      returnDate: "",
-    },
-  );
+  // const [updateData, setupdateData] = useState({
+  //   bookName: "",
+  //   username: "",
+  //   issuedDate: "",
+  //   returnDate: "",
+  // });
 
   // setupdateData({
   //   bookName: book.title,
@@ -23,7 +20,7 @@ const UserBooks = (props) => {
   //   issuedDate: userBooks.issuedDate,
   //   returnDate: userBooks.returnDate,
   // });
-  console.log(updateData);
+  // console.log(updateData);
   // const booksRef = useRef();
 
   // booksRef.current = userBook;
@@ -43,37 +40,37 @@ const UserBooks = (props) => {
       });
   };
 
-  const loadBook = () => {
-    userBooks.map((book) => {
-      UserService.getBook(book.bookId)
-        .then((response) => {
-          setupdateData(response.data.title);
-          console.log(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    });
-  };
+  // const loadBook = () => {
+  //   userBooks.map((book) => {
+  //     UserService.getBook(book.bookId)
+  //       .then((response) => {
+  //         setupdateData(response.data.title);
+  //         console.log(response.data);
+  //       })
+  //       .catch((e) => {
+  //         console.log(e);
+  //       });
+  //   });
+  // };
 
-  const loadUser = () => {
-    userBooks.map((user) => {
-      UserService.getUser(user.userId)
-        .then((response) => {
-          setupdateData(response.data);
-          console.log(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    });
-  };
+  // const loadUser = () => {
+  //   userBooks.map((user) => {
+  //     UserService.getUser(user.userId)
+  //       .then((response) => {
+  //         setupdateData(response.data);
+  //         console.log(response.data);
+  //       })
+  //       .catch((e) => {
+  //         console.log(e);
+  //       });
+  //   });
+  // };
 
-  const refreshList = () => {
-    retrieveBooks();
-    loadBook();
-    loadUser();
-  };
+  // const refreshList = () => {
+  //   retrieveBooks();
+  //   loadBook();
+  //   loadUser();
+  // };
 
   // refreshList();
 
