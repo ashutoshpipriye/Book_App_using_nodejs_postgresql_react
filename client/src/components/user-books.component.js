@@ -1,14 +1,32 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { Table } from "react-bootstrap";
 import UserService from "../services/user.service";
 import { useTable } from "react-table";
 
 const UserBooks = (props) => {
   const [userBooks, setUserBooks] = useState([]);
-  const [userBook, setuserBook] = useState([]);
+  const [book, setBook] = useState([]);
+  const [user, setUser] = useState([]);
 
-  const booksRef = useRef();
+  const [updateData, setupdateData] = useState(
+    {
+      bookName: "",
+      username: "",
+      issuedDate: "",
+      returnDate: "",
+    },
+  );
 
-  booksRef.current = userBook;
+  // setupdateData({
+  //   bookName: book.title,
+  //   username: user.username,
+  //   issuedDate: userBooks.issuedDate,
+  //   returnDate: userBooks.returnDate,
+  // });
+  console.log(updateData);
+  // const booksRef = useRef();
+
+  // booksRef.current = userBook;
 
   useEffect(() => {
     retrieveBooks();
@@ -25,11 +43,11 @@ const UserBooks = (props) => {
       });
   };
 
-  const loadBook = (rowIdx) => {
+  const loadBook = () => {
     userBooks.map((book) => {
       UserService.getBook(book.bookId)
         .then((response) => {
-          setuserBook(response.data);
+          setupdateData(response.data.title);
           console.log(response.data);
         })
         .catch((e) => {
@@ -38,11 +56,11 @@ const UserBooks = (props) => {
     });
   };
 
-  const loadUser = (rowIdx) => {
-    userBooks.map((book) => {
-      UserService.getUser(book.userId)
+  const loadUser = () => {
+    userBooks.map((user) => {
+      UserService.getUser(user.userId)
         .then((response) => {
-          setuserBook(response.data);
+          setupdateData(response.data);
           console.log(response.data);
         })
         .catch((e) => {
@@ -53,72 +71,34 @@ const UserBooks = (props) => {
 
   const refreshList = () => {
     retrieveBooks();
+    loadBook();
+    loadUser();
   };
-  // loadBook();
-  // loadUser();
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Book Name",
-        accessor: "bookId",
-      },
-      {
-        Header: "User Name",
-        accessor: "userId",
-      },
-      {
-        Header: "Issued Date",
-        accessor: "issuedDate",
-      },
-      {
-        Header: "Return Date",
-        accessor: "returnDate",
-      },
-    ],
-    []
-  );
+  // refreshList();
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({
-      columns,
-      data: userBooks,
-    });
+  let data = userBooks.map((userBook) => (
+    <tr>
+      <td>{userBook.bookId}</td>
+      <td>{userBook.userId}</td>
+      <td>{userBook.issuedDate}</td>
+      <td>{userBook.returnDate}</td>
+    </tr>
+  ));
 
   return (
-    <div className="list row">
-      <div className="col-md-12 list">
-        <table
-          className="table table-striped table-bordered"
-          {...getTableProps()}
-        >
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row, i) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+    <div>
+      <Table bordered style={{ marginTop: "1rem" }}>
+        <thead>
+          <tr>
+            <th>Book Name</th>
+            <th>User Name</th>
+            <th>Issued Date</th>
+            <th>Return Date</th>
+          </tr>
+        </thead>
+        <tbody>{data}</tbody>
+      </Table>
     </div>
   );
 };

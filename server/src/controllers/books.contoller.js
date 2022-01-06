@@ -1,6 +1,6 @@
 const db = require("../models");
 const Book = db.books;
-const Userbooks = db.userBooks;
+const Userbooks = db.Userbooks;
 // const Op = db.Sequelize.Op;
 
 // Create and Save a new Book
