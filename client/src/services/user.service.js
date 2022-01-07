@@ -26,6 +26,10 @@ class UserService {
     return axios.get(API_URL + "books?isIssue=true");
   }
 
+  getUserReturnBooks(id) {
+    return axios.get(API_URL + `books/user/Books/${id}`);
+  }
+
   updateBook(id, data) {
     return axios.put(API_URL + `books/${id}`, data);
   }
@@ -51,7 +55,7 @@ class UserService {
   }
 
   getUserBooks() {
-    return axios.get(API_URL + "books/user/Books");
+    return axios.get(API_URL + "books/users/Books");
   }
 
   getUsers() {

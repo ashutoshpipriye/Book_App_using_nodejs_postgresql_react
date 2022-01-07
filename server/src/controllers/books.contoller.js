@@ -1,6 +1,7 @@
 const db = require("../models");
 const Book = db.books;
 const Userbooks = db.Userbooks;
+const User = db.user;
 // const Op = db.Sequelize.Op;
 
 // Create and Save a new Book
@@ -142,15 +143,51 @@ exports.returnBook = async (req, res) => {
     });
 };
 
-// get userBooks
-exports.getUserBooks = async (req, res) => {
-  await Userbooks.findAll()
-    .then((data) => {
-      res.send(data);
+// get all usersBooks
+exports.getUsersIssuedBooks = async (req, res) => {
+  await Book.findAll({
+    include: [
+      {
+        model: User,
+        as: "users",
+        attributes: ["id", "username"],
+        through: {
+          attributes: ["issuedDate", "returnDate"],
+        },
+      },
+    ],
+  })
+    .then((usersbooks) => {
+      res.send(usersbooks);
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Some error occurred while retrieving books.",
+        message: "Some error occurred while retrieving usersbooks.",
+      });
+    });
+};
+
+// get userBooks
+exports.getUserBooks = async (req, res) => {
+  const id = req.params.id;
+  await User.findByPk(id, {
+    include: [
+      {
+        model: Book,
+        as: "books",
+        // attributes: ["id", "title", "author", "description", "isIssue"],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  })
+    .then((userbooks) => {
+      res.send(userbooks);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Some error occurred while retrieving userbooks.",
       });
     });
 };

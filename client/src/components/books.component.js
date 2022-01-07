@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import UserService from "../services/user.service";
 import { useTable } from "react-table";
+import AuthService from "../services/auth.service";
 
 const ReturnUserBook = (props) => {
   const [books, setBooks] = useState([]);
+  const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
   const booksRef = useRef();
 
   booksRef.current = books;
@@ -13,9 +15,10 @@ const ReturnUserBook = (props) => {
   }, []);
 
   const retrieveBooks = () => {
-    UserService.getReturnBooks()
+    const id = currentUser.id;
+    UserService.getUserReturnBooks(id)
       .then((response) => {
-        setBooks(response.data);
+        setBooks(response.data.books);
       })
       .catch((e) => {
         console.log(e);

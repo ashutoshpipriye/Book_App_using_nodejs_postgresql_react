@@ -3,29 +3,29 @@ import { Table } from "react-bootstrap";
 import UserService from "../services/user.service";
 
 const UserBooks = (props) => {
-  const [userBooks, setUserBooks] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     retrieveBooks();
   }, []);
 
   const retrieveBooks = () => {
-    UserService.getUserBooks()
+    UserService.getUsers()
       .then((response) => {
-        setUserBooks(response.data);
-        console.log(response.data);
+        setUsers(response.data);
+        // console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
       });
   };
 
-  let data = userBooks.map((userBook) => (
+  let data = users.map((users) => (
     <tr>
-      <td>{userBook.title}</td>
-      <td>{userBook.users.map((user) => user.username)}</td>
-      <td>{userBook.users.map((user) => user.user_books.issuedDate)}</td>
-      <td>{userBook.users.map((user) => user.user_books.returnDate)}</td>
+      <td>{users.username}</td>
+      <td>{users.email}</td>
+      <td>{users.roles.map((role) => role.name.toUpperCase())}</td>
+      <td>{users.createdAt}</td>
     </tr>
   ));
 
@@ -34,10 +34,10 @@ const UserBooks = (props) => {
       <Table bordered style={{ marginTop: "1rem" }}>
         <thead>
           <tr>
-            <th>Book Name</th>
             <th>User Name</th>
-            <th>Issued Date</th>
-            <th>Return Date</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Register Date</th>
           </tr>
         </thead>
         <tbody>{data}</tbody>

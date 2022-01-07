@@ -1,5 +1,6 @@
 const db = require("../models");
 const User = db.user;
+const Role = db.role;
 
 exports.allAccess = (req, res) => {
   res.status(200).send("Public Content.");
@@ -15,7 +16,17 @@ exports.adminBoard = (req, res) => {
 
 // get all user
 exports.getUsers = async (req, res) => {
-  await User.findAll()
+  await User.findAll({
+    include: [
+      {
+        model: Role,
+        attributes: ["id", "name"],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  })
     .then((data) => {
       res.send(data);
     })

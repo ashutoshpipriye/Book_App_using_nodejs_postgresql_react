@@ -28,8 +28,11 @@ module.exports = (app) => {
   // issue a Book with id
   router.put("/return/:id", books.returnBook);
 
-  // get userBooks
-  router.get("/user/Books", books.getUserBooks);
+  // get usersBooks
+  router.get("/users/Books", books.getUsersIssuedBooks);
+
+  // get usersBooks
+  router.get("/user/Books/:id", books.getUserBooks);
 
   // Update Book a with id
   router.put("/:id", books.updateBook);
