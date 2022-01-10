@@ -15,6 +15,7 @@ import ReturnUserBook from "./components/books.component";
 import AddBook from "./components/addbook.component";
 import UserBooks from "./components/user-books.component";
 import Users from "./components/users.component";
+import UserReadBooks from "./components/user-read-books.component";
 
 import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
@@ -114,6 +115,14 @@ class App extends Component {
                 </Link>
               </li>
             )}
+
+            {currentUser && (
+              <li className="nav-item">
+                <Link to={"/userReadBook"} className="nav-link">
+                  Read Books
+                </Link>
+              </li>
+            )}
           </div>
 
           {currentUser ? (
@@ -157,6 +166,7 @@ class App extends Component {
             <Route path="/admin" component={BoardAdmin} />
             <Route path="/addBook" component={AddBook} />
             <Route path="/userBook" component={UserBooks} />
+            <Route path="/userReadBook" component={UserReadBooks} />
             <Route path="/users" component={Users} />
           </Switch>
         </div>

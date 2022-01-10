@@ -167,7 +167,7 @@ exports.getUsersIssuedBooks = async (req, res) => {
     });
 };
 
-// get userBooks
+// get userNot-ReturnBooks
 exports.getUserBooks = async (req, res) => {
   const id = req.params.id;
   await User.findByPk(id, {
@@ -176,6 +176,35 @@ exports.getUserBooks = async (req, res) => {
         model: Book,
         as: "books",
         // attributes: ["id", "title", "author", "description", "isIssue"],
+        where: { isIssue: true },
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  })
+    .then((userbooks) => {
+      if (userbooks == undefined) {
+        res.send({ message: "No books is issued" });
+      } else {
+        res.send(userbooks);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Some error occurred while retrieving userbooks.",
+      });
+    });
+};
+
+// get userNot-ReturnBooks
+exports.getUserReadBooks = async (req, res) => {
+  const id = req.params.id;
+  await User.findByPk(id, {
+    include: [
+      {
+        model: Book,
+        as: "books",
         through: {
           attributes: [],
         },

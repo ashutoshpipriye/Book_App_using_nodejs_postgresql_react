@@ -18,7 +18,11 @@ const ReturnUserBook = (props) => {
     const id = currentUser.id;
     UserService.getUserReturnBooks(id)
       .then((response) => {
-        setBooks(response.data.books);
+        if (response.data === undefined) {
+          // setBooks(response);
+        } else {
+          setBooks(response.data.books);
+        }
       })
       .catch((e) => {
         console.log(e);
@@ -57,13 +61,6 @@ const ReturnUserBook = (props) => {
       {
         Header: "Description",
         accessor: "description",
-      },
-      {
-        Header: "Available",
-        accessor: "Available",
-        Cell: (props) => {
-          return props.isIssue ? "Available" : "Issued";
-        },
       },
       {
         Header: "Actions",

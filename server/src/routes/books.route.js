@@ -31,8 +31,11 @@ module.exports = (app) => {
   // get usersBooks
   router.get("/users/Books", books.getUsersIssuedBooks);
 
-  // get usersBooks
+  // userNot-ReturnBooks
   router.get("/user/Books/:id", books.getUserBooks);
+
+  // get usersReadBooks
+  router.get("/user/readBooks/:id", books.getUserReadBooks);
 
   // Update Book a with id
   router.put("/:id", books.updateBook);

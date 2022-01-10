@@ -30,6 +30,10 @@ class UserService {
     return axios.get(API_URL + `books/user/Books/${id}`);
   }
 
+  getUserReadBooks(id) {
+    return axios.get(API_URL + `books/user/readBooks/${id}`);
+  }
+
   updateBook(id, data) {
     return axios.put(API_URL + `books/${id}`, data);
   }
